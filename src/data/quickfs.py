@@ -37,6 +37,7 @@ class QuickFS():
         usage = requests.get(f"https://public-api.quickfs.net/v1/usage?api_key={self.api_key}")
         content = json.loads(usage.content)['usage']['quota']
         logger.info(content)
+        return content
 
     def get_metrics(self, qfs_symbol, metrics=None, period='quarterly'):
         if metrics:

@@ -95,6 +95,9 @@ def get_sp500_financial_metrics(opts):
     config = read_quickfs_config(opts['-c'])
     api = QuickFS(api_key=config['default']['api_key'])
 
+    if api._usage()['remaining'] <= 100:
+        raise RuntimeError('Insufficient quotas left')
+
     # since we are limited to only 25000 datapoints per day, and each
     # 'all-data' api call uses 100 datapoints, we would need to query
     # the data over 3 days.
