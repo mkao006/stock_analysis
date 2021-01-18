@@ -71,6 +71,18 @@ def extract_dataroma_superinvestor_portfolio():
     superinvestor_portfolios = concatenate_portfolios(superinvestor_links)
     return superinvestor_portfolios
 
+def get_sp500_company_info():
+    '''The function extracts the tables from the list of SP500 wiki
+    page. The page has 2 tables:
+
+    1. companies that are currently listed
+    2. companies added/removed in the past.
+
+    '''
+    url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+    response = requests.get(url)
+    tables = pd.read_html(response.text)
+    return tables
 
 if __name__ == '__main__':
     opts = docopt(__doc__)
