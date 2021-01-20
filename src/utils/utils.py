@@ -54,10 +54,13 @@ class SP500ReturnSimulator():
                         ax=ax, color='red', zorder=10)
         plt.show()
 
-    def _calculate_return(self, purchasing_index):
-        return np.mean([series_ar(self.series[ind:]) for ind in purchasing_index])
+    def _calculate_return(self, purchasing_index, weights=None):
+        if weights is None:
+            weights = np.ones(self.number_of_purchase)
+        return np.average([series_ar(self.series[ind:]) for ind in purchasing_index],
+                          weights=weights)
 
-    def random_sampling_strategy(self, plot=False, sample=10):
+    def random_sampling_strategy(self, plot=False, sample=10, weights=None, average_simulation=True):
         returns = [] * sample
         for iter in range(sample):
             purchasing_time = [s.sample(1).index[0] for s in self.split_series]
@@ -66,10 +69,13 @@ class SP500ReturnSimulator():
             if plot:
                 self._plot(purchasing_points)
         
-        returns.append(self._calculate_return(purchasing_index))
-        return np.mean(returns)
+            returns.append(self._calculate_return(purchasing_index, weights=weights))
+        if average_simulation:
+            return np.mean(returns)
+        else:
+            return returns
 
-    def equal_space_strategy(self, plot=False, sample=10):
+    def equal_space_strategy(self, plot=False, sample=10, weights=None, average_simulation=True):
         returns = [] * sample
         for iter in range(sample):
             purchase_ind = np.random.choice(np.max(self.bin_max_obs), 1)[0]
@@ -79,8 +85,11 @@ class SP500ReturnSimulator():
             purchasing_points = self.series.iloc[purchasing_index]
             if plot:
                 self._plot(purchasing_points)
-        returns.append(self._calculate_return(purchasing_index))
-        return np.mean(returns)
+            returns.append(self._calculate_return(purchasing_index, weights=weights))
+        if average_simulation:
+            return np.mean(returns)
+        else:
+            return returns
 
     def optimal_return(self, plot=False):
         purchasing_time = [s.idxmin() for s in self.split_series]
