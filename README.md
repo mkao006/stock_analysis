@@ -1,7 +1,9 @@
-yes
+Analysis of stock market
 ==============================
 
-Analysis of stock
+* [what are super investors buying](https://github.com/mkao006/stock_analysis/blob/main/notebooks/1_what_do_superinvestors_buy.ipynb)
+* [&P500 buying strategy simulation](https://github.com/mkao006/stock_analysis/blob/main/notebooks/2_s%26p500_hold_simulation.ipynb)
+
 
 Project Organization
 ------------
